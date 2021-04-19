@@ -176,7 +176,14 @@ class SurveyController extends Controller
         $isAdmin = Bouncer::is(Auth::user())->an('admin');
         $isParticipant = Bouncer::is(Auth::user())->an('participant');
         if(strcmp($this->checkUserPermissions($isAdmin, $isParticipant), 'participant') === 0) return redirect()->route('surveylisted');
-        $participants = User::all();
+        $participantz = User::all();
+
+        $participant = [];
+        foreach($participantz as $participant) {
+            $isParticipant = Bouncer::is($participant)->an('participant');
+            if($isParticipant) $participants[] = $participant;
+        }
+
         $survey = Survey::where('id', request()->surveyId)->first();
         return view('survey.createParticipants', ["participants"=>$participants, 'survey' => $survey]);
 
