@@ -1,1 +1,11 @@
-participant_user_id,participant_name,question,question_type,answerValue
+participant_name,question,question_type,answerValue
+evanp,"Are you happy?",radio,on
+evanp,"When are you happy?",text,asdf
+evanp,"likert question",range,
+evanp,"How happy are you?",radio,
+evanp,"How happy are you?",radio,
+fff,"Are you happy?",radio,on
+fff,"When are you happy?",text,asdfasdf
+fff,"likert question",range,5
+fff,"How happy are you?",radio,on
+fff,"How happy are you?",radio,
