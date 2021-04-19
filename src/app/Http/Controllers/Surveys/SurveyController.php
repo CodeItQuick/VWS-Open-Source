@@ -7,6 +7,8 @@ use App\Models\User;
 
 use App\Models\Survey;
 use App\Models\AppendixO;
+use App\Models\Questions;
+use App\Models\AnswersRecorded;
 
 use App\Models\SurveyList;
 use Illuminate\Http\Request;
@@ -224,7 +226,7 @@ class SurveyController extends Controller
                         ->where('isCompleted',1)
                         ->where('survey_id',$surveyID);
                 })->paginate(5);
-        
+
         //dd($surveyUserList);
         return view('showReport',compact('survey', 'surveyUserList'));
     }
@@ -238,15 +240,29 @@ class SurveyController extends Controller
                         ->whereColumn('survey_user_lists.user_id','users.id')
                         ->where('isCompleted',1)
                         ->where('survey_id',$surveyID);
-                })->paginate(5);
+                })->get();
         //open file write
         $filename = "exportData.csv";
         $handle = fopen($filename, 'w+');
         //insert the table head to file: participant_user_id, participant_name, question, answerValue.
-        fputcsv($handle, array('participant_user_id', 'participant_name', 'question', 'answerValue'));
+        fputcsv($handle, array('participant_name', 'question', 'question_type', 'answerValue'));
+
         //get all related data as row and insert into the file
-        fputcsv($handle, array('1', '2', '3', '4'));
-        //close the file
+        //get related questions
+        $questions_alt = Questions::where('survey_id', $survey->id)->get();
+         //get answers, for each users then for each record, write a row.
+        foreach ($surveyUserList as $current_loop_user){
+            foreach ($questions_alt as $questionz) {
+                $current_answer = AnswersRecorded::where(['participant_user_id' => $current_loop_user->id, 'question_id' => $questionz->id])->get()->first();
+                //write into file
+                // dd($current_answer->answerValue);
+                fputcsv($handle, array($current_loop_user->name,
+                                         $questionz->question,
+                                         $questionz->type,
+                                         ($current_answer) ? $current_answer->answerValue : '' ));
+            }
+        }
+        //close the file wirte
         fclose($handle);
         $headers = array('Content-Type' => 'text/csv',);
 
