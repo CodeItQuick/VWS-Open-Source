@@ -52,7 +52,7 @@ class SearchController extends Controller
     public function showAnswerData(Request $request){
         // dd($request->survey_id);
         //use user_id find user.
-        $user = User::where('name', $request->id)->first();
+        $user = User::where('id', $request->id)->first();
         $questions_alt = Questions::where('survey_id', $request->survey_id)->get();
         // dd($questions_alt);
         $questions = [];

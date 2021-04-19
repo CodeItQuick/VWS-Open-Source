@@ -213,4 +213,43 @@ class SurveyController extends Controller
             return 'superadmin';
         }
     }
+
+    public function showReport(Survey $survey){
+        $surveyID = $survey->id;
+        //find all participant that related to this survey
+        $surveyUserList= DB::table('users')
+                ->whereExists(function ($query) use($surveyID){
+                    $query->from('survey_user_lists')
+                        ->whereColumn('survey_user_lists.user_id','users.id')
+                        ->where('isCompleted',1)
+                        ->where('survey_id',$surveyID);
+                })->paginate(5);
+        
+        //dd($surveyUserList);
+        return view('showReport',compact('survey', 'surveyUserList'));
+    }
+
+    public function exportData(Survey $survey){
+        $surveyID = $survey->id;
+        //find all participant that related to this survey
+        $surveyUserList= DB::table('users')
+                ->whereExists(function ($query) use($surveyID){
+                    $query->from('survey_user_lists')
+                        ->whereColumn('survey_user_lists.user_id','users.id')
+                        ->where('isCompleted',1)
+                        ->where('survey_id',$surveyID);
+                })->paginate(5);
+        //open file write
+        $filename = "exportData.csv";
+        $handle = fopen($filename, 'w+');
+        //insert the table head to file: participant_user_id, participant_name, question, answerValue.
+        fputcsv($handle, array('participant_user_id', 'participant_name', 'question', 'answerValue'));
+        //get all related data as row and insert into the file
+        fputcsv($handle, array('1', '2', '3', '4'));
+        //close the file
+        fclose($handle);
+        $headers = array('Content-Type' => 'text/csv',);
+
+        return response()->download($filename, 'exportData.csv', $headers);
+    }
 }

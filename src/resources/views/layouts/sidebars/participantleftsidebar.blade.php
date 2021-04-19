@@ -19,7 +19,6 @@
               <li class="nav-item">
                 <a class="nav-link disabled" href="#">Messages</a>
               </li>
-              @auth
               <li class="nav-item">
                 <a class="nav-link" href="#">{{ auth()->user()->name }}</a>
               </li>

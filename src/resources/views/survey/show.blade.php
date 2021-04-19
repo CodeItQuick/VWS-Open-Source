@@ -4,6 +4,7 @@
             <div>
                 <a class="btn btn-dark" href="/surveys/questions/create?surveyId={{ $survey->id }}">Add New Question</a>
                 <a class="btn btn-dark" href="/surveys/participants/create?surveyId={{ $survey->id }}">Add a Participant</a>
+                <a class="btn btn-dark" href="/showReport/{{ $survey->id }}">View Report</a>
             </div>
             <div class="survey-create card mt-4">
                     @if (session('alert'))
