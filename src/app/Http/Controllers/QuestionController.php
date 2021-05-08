@@ -14,7 +14,7 @@ class QuestionController extends Controller
 
         return view('survey.question.create',compact('survey'));
     }
-    public function store(Survey $survey, Request $request)
+    public function store(Request $request)
     {
         $survey = Survey::where('id', request()->surveyId)->first();
         $this->validate($request,[

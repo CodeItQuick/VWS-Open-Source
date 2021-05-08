@@ -26,33 +26,33 @@ class DistributeSurveyTest extends TestCase
      *
      * @return void
      */
-    // public function testUserCanCreateADistributedSurveyTest()
-    // {
-    //     $user = new User(array('name' => 'John'));
-    //     $this->actingAs($user)->post('/dashboard/distributeSurvey', $this->data());
+    public function testUserCanCreateADistributedSurveyTest()
+    {
+        $user = new User(array('name' => 'John'));
+        $this->actingAs($user)->post('/dashboard/distributeSurvey', $this->data());
 
-    //     $availableSurveys = AvailableSurveys::all();
+        $availableSurveys = AvailableSurveys::all();
 
-    //     $this->assertCount(1, $availableSurveys);
-    // }
+        $this->assertCount(1, $availableSurveys);
+    }
 
 
-    // /**
-    //  * A distributed survey.
-    //  *
-    //  * Fails becaues ParticipantUser has too many permissions at the moment
-    //  *
-    //  * @return void
-    //  */
-    // public function testParticipantUserCannotCreateADistributedSurveyTest()
-    // {
-    //     $user = new ParticipantUser(array('name' => 'John'));
-    //     $this->actingAs($user)->post('/dashboard/distributeSurvey', $this->data());
+    /**
+     * A distributed survey.
+     *
+     * Fails becaues ParticipantUser has too many permissions at the moment
+     *
+     * @return void
+     */
+    public function testParticipantUserCannotCreateADistributedSurveyTest()
+    {
+        $user = new ParticipantUser(array('name' => 'John'));
+        $this->actingAs($user)->post('/dashboard/distributeSurvey', $this->data());
 
-    //     $availableSurveys = AvailableSurveys::all();
+        $availableSurveys = AvailableSurveys::all();
 
-    //     $this->assertCount(0, $availableSurveys);
-    // }
+        $this->assertCount(0, $availableSurveys);
+    }
 
     private function data() {
         return [
